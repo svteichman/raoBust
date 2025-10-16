@@ -55,9 +55,10 @@
 </h1></div>
 <!-- badges: start -->
 
-<p><code>raoBust</code>, at its core, gives you all the important information from <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm()</a></code>, but also with model misspecification-robust Rao tests (also called score tests) and Wald tests.</p>
-<p>Robust score tests have outstanding error rate performance in small samples, <strong>and</strong> when your data is not drawn from a parametric family (i.e., always). It’s shocking to me (Amy) how well they perform. They have a reputation for being conservative in small samples, but I would argue that this is a <em>very good thing</em>.</p>
-<p>For now (because it’s what I need for my work) I only have implementations for Poisson GLMs with log links. If you have another specific case you’d like to request, please let me know at <a href="https://github.com/statdivlab/raoBust/issues" class="external-link">Issues</a> and label it as a “feature request”.</p>
+<p><code>raoBust</code>, at its core, gives you all the important information from <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm()</a></code>, but also with robust score tests. Robust score tests are robust (in error rate control) to many forms of model misspecification.</p>
+<p>Robust score tests have outstanding error rate performance in small samples, <strong>and</strong> when your data is not drawn from a parametric family (i.e., always). It is shocking how well they perform. They are generally conservative in small samples, which is a very good thing. You <em>should</em> err on conservative when you have few samples. Most other tests are anti-conservative in small samples.</p>
+<p>We currently have score tests for coefficients in Poisson GLMs (log link), Binomial GLMs (logit link), and Multinomial GLMs (log link), including for linear combinations of parameters and simultaneous testing (“ANOVA”). If you have another specific case you’d like to request, please let us know at <a href="https://github.com/statdivlab/raoBust/issues" class="external-link">Issues</a> and label it as a “feature request”.</p>
+<p>This package also implements robust Wald tests. Many other packages implement robust Wald tests – it is general methodology for robust score tests that are the unique contribution of this package.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -65,6 +66,7 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"statdivlab/raoBust"</span><span class="op">)</span></span></code></pre></div>
+<p>If it would be helpful for you for this package to be on CRAN, please let us know.</p>
 </div>
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
