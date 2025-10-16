@@ -32,6 +32,12 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="articles/intro_raoBust.html">Introduction to raoBust</a></li>
+  </ul>
+</li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -49,10 +55,9 @@
 </h1></div>
 <!-- badges: start -->
 
-<p><code>raoBust</code>, at its core, gives you all the important information from <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm()</a></code>, but also with robust score tests. Robust score tests are robust (in error rate control) to many forms of model misspecification.</p>
-<p>Robust score tests have outstanding error rate performance in small samples, <strong>and</strong> when your data is not drawn from a parametric family (i.e., always). It is shocking how well they perform. They are generally conservative in small samples, which is a very good thing. You <em>should</em> err on conservative when you have few samples. Most other tests are anti-conservative in small samples.</p>
-<p>We currently have score tests for coefficients in Poisson GLMs (log link), Binomial GLMs (logit link), and Multinomial GLMs (log link), including for linear combinations of parameters and simultaneous testing (“ANOVA”). If you have another specific case you’d like to request, please let us know at <a href="https://github.com/statdivlab/raoBust/issues" class="external-link">Issues</a> and label it as a “feature request”.</p>
-<p>This package also implements robust Wald tests. Many other packages implement robust Wald tests – it is general methodology for robust score tests that are the unique contribution of this package.</p>
+<p><code>raoBust</code>, at its core, gives you all the important information from <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm()</a></code>, but also with model misspecification-robust Rao tests (also called score tests) and Wald tests.</p>
+<p>Robust score tests have outstanding error rate performance in small samples, <strong>and</strong> when your data is not drawn from a parametric family (i.e., always). It’s shocking to me (Amy) how well they perform. They have a reputation for being conservative in small samples, but I would argue that this is a <em>very good thing</em>.</p>
+<p>For now (because it’s what I need for my work) I only have implementations for Poisson GLMs with log links. If you have another specific case you’d like to request, please let me know at <a href="https://github.com/statdivlab/raoBust/issues" class="external-link">Issues</a> and label it as a “feature request”.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -60,21 +65,36 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"statdivlab/raoBust"</span><span class="op">)</span></span></code></pre></div>
-<p>If it would be helpful for you for this package to be on CRAN, please let us know.</p>
 </div>
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
-<p>This is a really silly example to show you the syntax. It looks just like <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm()</a></code> on the input side, but outputs a summary table that includes robust score and robust Wald tests.</p>
+<p>This is a really silly example to show you the syntax. It looks just like <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm()</a></code> on the input side, but outputs a summary table that includes robust Wald and Rao tests as well as others.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">raoBust</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Registered S3 methods overwritten by 'geeasy':</span></span>
+<span><span class="co">#&gt;   method       from   </span></span>
+<span><span class="co">#&gt;   drop1.geeglm MESS   </span></span>
+<span><span class="co">#&gt;   drop1.geem   MESS   </span></span>
+<span><span class="co">#&gt;   plot.geeglm  geepack</span></span>
 <span><span class="fu"><a href="reference/glm_test.html">glm_test</a></span><span class="op">(</span><span class="va">dist</span> <span class="op">~</span> <span class="va">speed</span>, data <span class="op">=</span> <span class="va">cars</span>, family<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">poisson</a></span><span class="op">(</span>link<span class="op">=</span><span class="st">"log"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;               Estimate Non-robust Std Error Robust Std Error Non-robust Wald p</span></span>
-<span><span class="co">#&gt; (Intercept) 2.15096109          0.081774352      0.180014289     1.743527e-152</span></span>
-<span><span class="co">#&gt; speed       0.09650242          0.004404885      0.009234056     2.177435e-106</span></span>
-<span><span class="co">#&gt;             Robust Wald p Robust Score p</span></span>
-<span><span class="co">#&gt; (Intercept)             0   0.0406316810</span></span>
-<span><span class="co">#&gt; speed                   0   0.0000472766</span></span></code></pre></div>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Call:</span></span>
+<span><span class="co">#&gt; glm(dist ~ speed, data = cars, family = poisson(link = "log"))</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficient estimates:</span></span>
+<span><span class="co">#&gt;               Estimate Non-robust Std Error Robust Std Error Lower 95% CI</span></span>
+<span><span class="co">#&gt; (Intercept) 2.15096109          0.081774352      0.180014289     1.798140</span></span>
+<span><span class="co">#&gt; speed       0.09650242          0.004404885      0.009234056     0.078404</span></span>
+<span><span class="co">#&gt;             Upper 95% CI Non-robust Wald p Robust Wald p Robust Score p</span></span>
+<span><span class="co">#&gt; (Intercept)    2.5037826     1.743527e-152             0   4.945013e-07</span></span>
+<span><span class="co">#&gt; speed          0.1146008     2.177435e-106             0   3.956496e-05</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
+</h2>
+<p>We additionally have a <code>pkgdown</code> <a href="https://statdivlab.github.io/raoBust/" class="external-link">website</a> that contains pre-built versions of our function <a href="https://statdivlab.github.io/raoBust/reference/index.html" class="external-link">documentation</a> and an introductory <a href="https://statdivlab.github.io/radEmu/articles/intro_raoBust.html" class="external-link">vignette</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="people">People<a class="anchor" aria-label="anchor" href="#people"></a>
