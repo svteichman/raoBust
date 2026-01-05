@@ -6,7 +6,7 @@ glm robust score tests.
 ## Usage
 
 ``` r
-fisher_info_contribution(i, model_fits, yy, xx, family, link)
+fisher_info_contribution(i, model_fits, yy, xx, m = 1, family, link)
 ```
 
 ## Arguments
@@ -26,6 +26,10 @@ fisher_info_contribution(i, model_fits, yy, xx, family, link)
 - xx:
 
   Design matrix for model.
+
+- m:
+
+  Number of parameters fixed under null hypothesis.
 
 - family:
 
